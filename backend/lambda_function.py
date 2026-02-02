@@ -209,27 +209,45 @@ def handle_join_room(event, body):
         })
         return {'statusCode': 200}
 
-    if game.get('status') != 'waiting':
+    # Allow joining if fewer than 2 players (regardless of game status)
+    players = game.get('players', [])
+    if len(players) >= 2:
         send_to_connection(api_client, connection_id, {
             'action': 'error',
-            'message': 'Game already in progress'
+            'message': 'Room is full'
         })
         return {'statusCode': 200}
 
     # Add player
-    players = game.get('players', [])
     players.append({'connectionId': connection_id, 'name': player_name})
 
-    # Start game
+    # Reset game if it was finished, or start if waiting
+    word = game.get('word')
+    if game.get('status') in ('won', 'lost'):
+        # Start fresh game
+        word = random.choice(WORDS).lower()
+        game['guessedLetters'] = set()
+        game['wrongGuesses'] = 0
+        game['currentTurn'] = 0
+    else:
+        game['guessedLetters'] = set(game.get('guessedLetters', []))
+
+    game['word'] = word
     game['players'] = players
     game['status'] = 'playing'
-    game['guessedLetters'] = set(game.get('guessedLetters', []))
 
     games_table.update_item(
         Key={'roomId': room_id},
-        UpdateExpression='SET players = :p, #s = :st',
+        UpdateExpression='SET players = :p, #s = :st, word = :w, guessedLetters = :g, wrongGuesses = :wg, currentTurn = :t',
         ExpressionAttributeNames={'#s': 'status'},
-        ExpressionAttributeValues={':p': players, ':st': 'playing'}
+        ExpressionAttributeValues={
+            ':p': players,
+            ':st': 'playing',
+            ':w': game['word'],
+            ':g': list(game['guessedLetters']),
+            ':wg': game.get('wrongGuesses', 0),
+            ':t': game.get('currentTurn', 0)
+        }
     )
 
     # Update connection
