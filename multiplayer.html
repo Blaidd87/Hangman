@@ -575,6 +575,7 @@
         }
 
         function showGameScreen() {
+            console.log('showGameScreen called');
             lobbyScreen.classList.add('hidden');
             waitingScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -598,15 +599,20 @@
         }
 
         function createKeyboard() {
+            console.log('createKeyboard called, keyboardEl:', keyboardEl);
             keyboardEl.innerHTML = '';
             for (let i = 0; i < 26; i++) {
                 const letter = String.fromCharCode(97 + i);
                 const key = document.createElement('button');
                 key.className = 'key';
                 key.textContent = letter;
-                key.addEventListener('click', () => makeGuess(letter));
+                key.addEventListener('click', () => {
+                    console.log('Key clicked:', letter);
+                    makeGuess(letter);
+                });
                 keyboardEl.appendChild(key);
             }
+            console.log('Keyboard created with', keyboardEl.children.length, 'keys');
         }
 
         function updateGameDisplay() {
