@@ -7,8 +7,20 @@ import json
 import os
 import random
 import string
+from decimal import Decimal
 import boto3
 from boto3.dynamodb.conditions import Key
+
+
+def convert_decimals(obj):
+    """Convert DynamoDB Decimal types to Python int/float for JSON serialization."""
+    if isinstance(obj, list):
+        return [convert_decimals(i) for i in obj]
+    elif isinstance(obj, dict):
+        return {k: convert_decimals(v) for k, v in obj.items()}
+    elif isinstance(obj, Decimal):
+        return int(obj) if obj % 1 == 0 else float(obj)
+    return obj
 
 # Initialize AWS clients
 dynamodb = boto3.resource('dynamodb')
@@ -68,7 +80,7 @@ def broadcast_to_room(api_client, room_id, data, exclude_connection=None):
 
 def get_game_state(game):
     """Get sanitized game state for clients."""
-    return {
+    state = {
         'roomId': game['roomId'],
         'wordLength': len(game['word']),
         'guessedLetters': list(game.get('guessedLetters', set())),
@@ -82,6 +94,7 @@ def get_game_state(game):
         'currentTurn': game.get('currentTurn', 0),
         'maxWrongGuesses': 6
     }
+    return convert_decimals(state)
 
 
 def handle_connect(event):
@@ -211,6 +224,7 @@ def handle_join_room(event, body):
 
     # Allow joining if fewer than 2 players (regardless of game status)
     players = game.get('players', [])
+    print(f"DEBUG: Room {room_id} has {len(players)} players: {players}")
     if len(players) >= 2:
         send_to_connection(api_client, connection_id, {
             'action': 'error',
