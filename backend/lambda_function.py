@@ -224,7 +224,6 @@ def handle_join_room(event, body):
 
     # Allow joining if fewer than 2 players (regardless of game status)
     players = game.get('players', [])
-    print(f"DEBUG: Room {room_id} has {len(players)} players: {players}")
     if len(players) >= 2:
         send_to_connection(api_client, connection_id, {
             'action': 'error',

@@ -42,6 +42,7 @@ python3 hangman.py
 - `words.js` - Word list for web version
 - `hangman.py` - Command-line Python version
 - `words.txt` - Word list for Python version
+- `backend/` - AWS Lambda backend for multiplayer (see `backend/DEPLOY.md`)
 
 ## Requirements
 

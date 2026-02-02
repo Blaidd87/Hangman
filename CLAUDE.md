@@ -17,13 +17,16 @@ https://blaidd87.github.io/Hangman/
 
 ```
 Hangman/
-├── index.html       # Single-player web game (HTML/CSS/JS)
-├── multiplayer.html # Multiplayer web game (requires WebSocket server)
-├── words.js         # Word list for web version
-├── hangman.py       # Python command-line game
-├── words.txt        # Word list for Python version
-├── README.md        # User documentation
-└── CLAUDE.md        # Developer instructions
+├── index.html        # Single-player web game (HTML/CSS/JS)
+├── multiplayer.html  # Multiplayer web game (requires WebSocket server)
+├── words.js          # Word list for web version
+├── hangman.py        # Python command-line game
+├── words.txt         # Word list for Python version
+├── README.md         # User documentation
+├── CLAUDE.md         # Developer instructions
+└── backend/
+    ├── lambda_function.py  # AWS Lambda handler for multiplayer
+    └── DEPLOY.md           # AWS deployment instructions
 ```
 
 ## Key Files
@@ -32,6 +35,8 @@ Hangman/
 - **index.html** - Self-contained single-player web app, loads words.js separately
 - **multiplayer.html** - Multiplayer web app requiring WebSocket server (configure WS_URL constant)
 - **hangman.py** - Loads words from words.txt at runtime
+- **backend/lambda_function.py** - AWS Lambda WebSocket handler for multiplayer
+- **backend/DEPLOY.md** - Step-by-step AWS deployment guide
 
 ## Testing
 
