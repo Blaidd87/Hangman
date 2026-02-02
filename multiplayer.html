@@ -504,8 +504,12 @@
         }
 
         function send(data) {
+            console.log('send() called:', data, 'ws ready:', ws?.readyState);
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify(data));
+                console.log('Message sent successfully');
+            } else {
+                console.log('WebSocket not ready, state:', ws?.readyState);
             }
         }
 
@@ -664,16 +668,22 @@
         }
 
         function makeGuess(letter) {
-            if (!gameState || gameState.status !== 'playing') return;
+            console.log('makeGuess called:', letter, 'gameState:', gameState?.status, 'playerName:', playerName);
+            if (!gameState || gameState.status !== 'playing') {
+                console.log('Early return - gameState:', gameState, 'status:', gameState?.status);
+                return;
+            }
 
             const currentTurn = gameState.currentTurn || 0;
             const currentPlayer = gameState.players[currentTurn];
             const currentPlayerName = currentPlayer?.name || currentPlayer;
+            console.log('Turn check in makeGuess:', { currentPlayerName, playerName, match: currentPlayerName === playerName });
             if (currentPlayerName !== playerName) {
                 showError("Not your turn!");
                 return;
             }
 
+            console.log('Sending guess:', letter);
             send({ action: 'guess', letter: letter });
         }
 
