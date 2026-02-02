@@ -1,32 +1,45 @@
 # Hangman
 
-A simple command-line Hangman game written in Python.
+A classic Hangman word-guessing game with 59,502 words from the UK English dictionary.
+
+## Play Online
+
+**[Play now at https://blaidd87.github.io/Hangman/](https://blaidd87.github.io/Hangman/)**
+
+Works on any device - desktop, tablet, or mobile.
+
+## Command-Line Version
+
+You can also play in the terminal:
+
+```bash
+python3 hangman.py
+```
 
 ## How to Play
 
-1. Run the game:
-   ```bash
-   python3 hangman.py
-   ```
-
-2. The game will select a random word and display it as underscores.
-
-3. Guess one letter at a time by typing it and pressing Enter.
-
-4. If the letter is in the word, it will be revealed in the correct position(s).
-
-5. If the letter is not in the word, a part of the hangman will be drawn.
-
-6. Win by guessing all the letters before the hangman is complete (6 wrong guesses allowed).
+1. A random word is selected and displayed as underscores
+2. Guess one letter at a time
+3. Correct guesses reveal the letter in the word
+4. Wrong guesses add a part to the hangman drawing
+5. Win by guessing the word before the hangman is complete (6 wrong guesses allowed)
 
 ## Features
 
-- 15 programming-themed words to guess
+- 59,502 words from the UK English dictionary
+- Words filtered to 4-12 characters for balanced gameplay
 - ASCII art hangman visualization
 - Tracks guessed letters
-- Shows remaining wrong guesses
-- Option to play multiple rounds
+- Play again option
+
+## Files
+
+- `index.html` - Web version (works in any browser)
+- `words.js` - Word list for web version
+- `hangman.py` - Command-line Python version
+- `words.txt` - Word list for Python version
 
 ## Requirements
 
-- Python 3.x
+- Web version: Any modern browser
+- Command-line version: Python 3.x
