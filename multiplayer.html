@@ -604,7 +604,10 @@
                 const key = document.createElement('button');
                 key.className = 'key';
                 key.textContent = letter;
-                key.addEventListener('click', () => makeGuess(letter));
+                key.onclick = function() {
+                    addActivity('Clicked: ' + letter);
+                    makeGuess(letter);
+                };
                 keyboardEl.appendChild(key);
             }
         }
