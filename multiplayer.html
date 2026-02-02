@@ -504,18 +504,12 @@
         }
 
         function send(data) {
-            console.log('send() called:', data, 'ws ready:', ws?.readyState);
             if (ws && ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify(data));
-                console.log('Message sent successfully');
-            } else {
-                console.log('WebSocket not ready, state:', ws?.readyState);
             }
         }
 
         function handleMessage(data) {
-            console.log('Received:', data);
-
             switch (data.action) {
                 case 'roomCreated':
                     currentRoom = data.roomId;
@@ -575,7 +569,6 @@
         }
 
         function showGameScreen() {
-            console.log('showGameScreen called');
             lobbyScreen.classList.add('hidden');
             waitingScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -599,20 +592,15 @@
         }
 
         function createKeyboard() {
-            console.log('createKeyboard called, keyboardEl:', keyboardEl);
             keyboardEl.innerHTML = '';
             for (let i = 0; i < 26; i++) {
                 const letter = String.fromCharCode(97 + i);
                 const key = document.createElement('button');
                 key.className = 'key';
                 key.textContent = letter;
-                key.addEventListener('click', () => {
-                    console.log('Key clicked:', letter);
-                    makeGuess(letter);
-                });
+                key.addEventListener('click', () => makeGuess(letter));
                 keyboardEl.appendChild(key);
             }
-            console.log('Keyboard created with', keyboardEl.children.length, 'keys');
         }
 
         function updateGameDisplay() {
@@ -631,7 +619,6 @@
             const currentPlayer = gameState.players[currentTurn];
             const currentPlayerName = currentPlayer?.name || currentPlayer;
             const isMyTurn = currentPlayerName === playerName;
-            console.log('Turn check:', { currentPlayerName, playerName, isMyTurn, currentTurn, players: gameState.players });
 
             if (gameState.status === 'playing') {
                 turnIndicator.textContent = isMyTurn ? "Your turn!" : `${currentPlayerName}'s turn`;
@@ -674,22 +661,16 @@
         }
 
         function makeGuess(letter) {
-            console.log('makeGuess called:', letter, 'gameState:', gameState?.status, 'playerName:', playerName);
-            if (!gameState || gameState.status !== 'playing') {
-                console.log('Early return - gameState:', gameState, 'status:', gameState?.status);
-                return;
-            }
+            if (!gameState || gameState.status !== 'playing') return;
 
             const currentTurn = gameState.currentTurn || 0;
             const currentPlayer = gameState.players[currentTurn];
             const currentPlayerName = currentPlayer?.name || currentPlayer;
-            console.log('Turn check in makeGuess:', { currentPlayerName, playerName, match: currentPlayerName === playerName });
             if (currentPlayerName !== playerName) {
                 showError("Not your turn!");
                 return;
             }
 
-            console.log('Sending guess:', letter);
             send({ action: 'guess', letter: letter });
         }
 
