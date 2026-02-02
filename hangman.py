@@ -2,12 +2,20 @@
 """A simple command-line Hangman game."""
 
 import random
+from pathlib import Path
 
-WORDS = [
-    "python", "hangman", "programming", "computer", "keyboard",
-    "developer", "algorithm", "function", "variable", "software",
-    "terminal", "debugging", "interface", "database", "network"
-]
+
+def load_words():
+    """Load words from words.txt file."""
+    words_file = Path(__file__).parent / "words.txt"
+    if words_file.exists():
+        with open(words_file, "r") as f:
+            return [word.strip() for word in f if word.strip()]
+    # Fallback to a small default list if words.txt not found
+    return ["python", "hangman", "programming", "computer", "keyboard"]
+
+
+WORDS = load_words()
 
 HANGMAN_STAGES = [
     """
