@@ -380,6 +380,7 @@
             <div class="keyboard" id="keyboard"></div>
             <button class="play-again hidden" id="newGameBtn">New Game</button>
             <div class="activity-log" id="activityLog"></div>
+            <button onclick="addActivity('Test click works!')" style="margin-top:10px;padding:10px;background:#e74c3c;color:white;border:none;border-radius:5px;">Test Click</button>
         </div>
     </div>
 
@@ -504,9 +505,15 @@
         }
 
         function send(data) {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify(data));
+            if (!ws) {
+                showError("Not connected");
+                return;
             }
+            if (ws.readyState !== WebSocket.OPEN) {
+                showError("Connection lost");
+                return;
+            }
+            ws.send(JSON.stringify(data));
         }
 
         function handleMessage(data) {
@@ -598,7 +605,10 @@
                 const key = document.createElement('button');
                 key.className = 'key';
                 key.textContent = letter;
-                key.addEventListener('click', () => makeGuess(letter));
+                key.onclick = function() {
+                    addActivity('Clicked: ' + letter);
+                    makeGuess(letter);
+                };
                 keyboardEl.appendChild(key);
             }
         }
@@ -661,7 +671,14 @@
         }
 
         function makeGuess(letter) {
-            if (!gameState || gameState.status !== 'playing') return;
+            if (!gameState) {
+                showError("Game not loaded");
+                return;
+            }
+            if (gameState.status !== 'playing') {
+                showError("Game not active");
+                return;
+            }
 
             const currentTurn = gameState.currentTurn || 0;
             const currentPlayer = gameState.players[currentTurn];
@@ -670,6 +687,10 @@
                 showError("Not your turn!");
                 return;
             }
+
+            // Disable the key immediately to prevent double-clicks
+            const keyEl = Array.from(keyboardEl.children).find(k => k.textContent === letter);
+            if (keyEl) keyEl.disabled = true;
 
             send({ action: 'guess', letter: letter });
         }
