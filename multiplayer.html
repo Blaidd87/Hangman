@@ -340,12 +340,14 @@
 
         <!-- Lobby Screen -->
         <div class="lobby" id="lobbyScreen">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">Your Name:</label>
             <input type="text" id="playerName" placeholder="Enter your name" maxlength="20">
 
             <button class="btn-create" id="createRoomBtn">Create Room</button>
 
             <div class="divider">- or -</div>
 
+            <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #333;">Room Code:</label>
             <input type="text" id="roomCodeInput" placeholder="Enter room code" maxlength="4" style="text-transform: uppercase;">
             <button class="btn-join" id="joinRoomBtn">Join Room</button>
         </div>
@@ -694,12 +696,20 @@
 
         // Event Listeners
         createRoomBtn.addEventListener('click', () => {
-            playerName = playerNameInput.value.trim() || 'Player';
+            playerName = playerNameInput.value.trim();
+            if (!playerName) {
+                showError('Please enter your name');
+                return;
+            }
             send({ action: 'createRoom', playerName: playerName });
         });
 
         joinRoomBtn.addEventListener('click', () => {
-            playerName = playerNameInput.value.trim() || 'Player';
+            playerName = playerNameInput.value.trim();
+            if (!playerName) {
+                showError('Please enter your name');
+                return;
+            }
             const roomCode = roomCodeInput.value.trim().toUpperCase();
             if (!roomCode) {
                 showError('Please enter a room code');
