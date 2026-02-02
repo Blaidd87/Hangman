@@ -587,7 +587,7 @@
             if (!gameState) return;
             const currentTurn = gameState.currentTurn || 0;
             playersList.innerHTML = gameState.players
-                .map((p, i) => `<div class="player ${i === currentTurn ? 'current-turn' : ''}"><span class="player-dot"></span>${p}</div>`)
+                .map((p, i) => `<div class="player ${i === currentTurn ? 'current-turn' : ''}"><span class="player-dot"></span>${p.name || p}</div>`)
                 .join('');
         }
 
@@ -617,10 +617,11 @@
             // Update turn indicator
             const currentTurn = gameState.currentTurn || 0;
             const currentPlayer = gameState.players[currentTurn];
-            const isMyTurn = currentPlayer === playerName;
+            const currentPlayerName = currentPlayer?.name || currentPlayer;
+            const isMyTurn = currentPlayerName === playerName;
 
             if (gameState.status === 'playing') {
-                turnIndicator.textContent = isMyTurn ? "Your turn!" : `${currentPlayer}'s turn`;
+                turnIndicator.textContent = isMyTurn ? "Your turn!" : `${currentPlayerName}'s turn`;
                 turnIndicator.className = isMyTurn ? 'turn-indicator your-turn' : 'turn-indicator';
             } else {
                 turnIndicator.classList.add('hidden');
@@ -664,7 +665,8 @@
 
             const currentTurn = gameState.currentTurn || 0;
             const currentPlayer = gameState.players[currentTurn];
-            if (currentPlayer !== playerName) {
+            const currentPlayerName = currentPlayer?.name || currentPlayer;
+            if (currentPlayerName !== playerName) {
                 showError("Not your turn!");
                 return;
             }
