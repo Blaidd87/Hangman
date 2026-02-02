@@ -4,9 +4,7 @@ A classic Hangman word-guessing game with 59,502 words from the UK English dicti
 
 ## Play Online
 
-**[Play Single Player](https://blaidd87.github.io/Hangman/)** - Classic solo hangman game
-
-**[Play Multiplayer](https://blaidd87.github.io/Hangman/multiplayer.html)** - Turn-based game with friends (requires WebSocket server)
+**[Play now at https://blaidd87.github.io/Hangman/](https://blaidd87.github.io/Hangman/)**
 
 Works on any device - desktop, tablet, or mobile.
 
@@ -33,16 +31,13 @@ python3 hangman.py
 - ASCII art hangman visualization
 - Tracks guessed letters
 - Play again option
-- Multiplayer mode with turn-based gameplay
 
 ## Files
 
-- `index.html` - Single-player web version
-- `multiplayer.html` - Multiplayer web version (requires WebSocket server)
+- `index.html` - Web version (works in any browser)
 - `words.js` - Word list for web version
 - `hangman.py` - Command-line Python version
 - `words.txt` - Word list for Python version
-- `backend/` - AWS Lambda backend for multiplayer (see `backend/DEPLOY.md`)
 
 ## Requirements
 
