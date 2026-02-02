@@ -621,6 +621,7 @@
             const currentPlayer = gameState.players[currentTurn];
             const currentPlayerName = currentPlayer?.name || currentPlayer;
             const isMyTurn = currentPlayerName === playerName;
+            console.log('Turn check:', { currentPlayerName, playerName, isMyTurn, currentTurn, players: gameState.players });
 
             if (gameState.status === 'playing') {
                 turnIndicator.textContent = isMyTurn ? "Your turn!" : `${currentPlayerName}'s turn`;
