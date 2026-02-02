@@ -321,7 +321,7 @@ def handle_guess(event, body):
 
     # Check if it's this player's turn
     players = game.get('players', [])
-    current_turn = game.get('currentTurn', 0)
+    current_turn = int(game.get('currentTurn', 0))
 
     if current_turn < len(players):
         current_player = players[current_turn]
@@ -344,7 +344,7 @@ def handle_guess(event, body):
 
     guessed_letters.add(letter)
     word = game['word']
-    wrong_guesses = game.get('wrongGuesses', 0)
+    wrong_guesses = int(game.get('wrongGuesses', 0))
 
     correct = letter in word
     if not correct:
